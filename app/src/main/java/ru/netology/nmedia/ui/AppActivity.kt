@@ -18,19 +18,29 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             40F,
         )
 
-//        1.
+        // 1. Animations
 //        view.startAnimation(
 //            AnimationUtils.loadAnimation(this, R.anim.animation)
 //        )
 
-//        2.
+        // 2. Animator
+//        view.animate()
+//            .rotation(360F)
+//            .scaleX(1.2F)
+//            .scaleY(1.2F)
+//            .setInterpolator(LinearInterpolator())
+//            .setStartDelay(500)
+//            .setDuration(500)
+//            .start()
+
+        // HW. Rotation
         view.animate()
-            .rotation(360F)
-            .scaleX(1.2F)
-            .scaleY(1.2F)
             .setInterpolator(LinearInterpolator())
             .setStartDelay(500)
-            .setDuration(500)
+            .setDuration(5000)
+            .setUpdateListener { anim ->
+                anim.setFloatValues(0F, 1F)
+                view.progress = anim.animatedValue as Float }
             .start()
     }
 }
