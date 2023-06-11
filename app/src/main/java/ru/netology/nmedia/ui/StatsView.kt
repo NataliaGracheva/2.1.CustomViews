@@ -54,6 +54,11 @@ class StatsView @JvmOverloads constructor(
             field = value
             invalidate()
         }
+    var progress: Float = 0F
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         radius = min(w, h) / 2F - lineWidth / 2
@@ -69,7 +74,7 @@ class StatsView @JvmOverloads constructor(
             return
         }
 
-        var startFrom = -90F
+        var startFrom = -90F + (progress * 360F)
         val sum = data.sum()
         var firstColor: Int = colors[0]
 
@@ -78,12 +83,9 @@ class StatsView @JvmOverloads constructor(
             val color: Int = colors.getOrNull(index) ?: randomColor()
             if (index == 0) firstColor = color
             paint.color = color
-            canvas.drawArc(oval, startFrom, angle, false, paint)
+            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
             startFrom += angle
         }
-
-        paint.color = firstColor
-        canvas.drawArc(oval, -90F, 1F, false, paint)
 
         canvas.drawText(
             "%.2f%%".format(data.sum() / data.sum() * 100),
@@ -91,6 +93,9 @@ class StatsView @JvmOverloads constructor(
             center.y + textPaint.textSize / 4,
             textPaint,
         )
+
+        paint.color = firstColor
+        if (progress == 1F) canvas.drawArc(oval, -90F, 1F, false, paint)
     }
 
     private fun randomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
