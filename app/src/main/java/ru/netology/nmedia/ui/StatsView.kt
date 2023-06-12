@@ -49,12 +49,12 @@ class StatsView @JvmOverloads constructor(
         textSize = fontSize
     }
 
-    var data: List<Float> = emptyList()
-        set(value) {
-            field = value
-            invalidate()
-        }
-    var progress: Float = 0F
+    var data: List<Float> = listOf(
+    10F,
+    20F,
+    30F,
+    40F,
+    )
         set(value) {
             field = value
             invalidate()
@@ -74,7 +74,7 @@ class StatsView @JvmOverloads constructor(
             return
         }
 
-        var startFrom = -90F + (progress * 360F)
+        var startFrom = -90F
         val sum = data.sum()
         var firstColor: Int = colors[0]
 
@@ -83,7 +83,7 @@ class StatsView @JvmOverloads constructor(
             val color: Int = colors.getOrNull(index) ?: randomColor()
             if (index == 0) firstColor = color
             paint.color = color
-            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
+            canvas.drawArc(oval, startFrom, angle, false, paint)
             startFrom += angle
         }
 
@@ -95,7 +95,7 @@ class StatsView @JvmOverloads constructor(
         )
 
         paint.color = firstColor
-        if (progress == 1F) canvas.drawArc(oval, -90F, 1F, false, paint)
+        canvas.drawArc(oval, -90F, 1F, false, paint)
     }
 
     private fun randomColor() = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
